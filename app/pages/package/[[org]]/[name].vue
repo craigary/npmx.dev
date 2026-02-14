@@ -93,8 +93,6 @@ const navExtraOffsetStyle = computed(() => ({
 }))
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
-const selectedPM = useSelectedPackageManager()
-const activePmId = computed(() => selectedPM.value ?? 'npm')
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
@@ -764,7 +762,7 @@ const showSkeleton = shallowRef(false)
               :aria-label="copiedVersion ? $t('common.copied') : $t('package.copy_version')"
             >
               <span
-                :class="copiedVersion ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                :class="copiedVersion ? 'i-lucide:check' : 'i-lucide:copy'"
                 class="w-3.5 h-3.5"
                 aria-hidden="true"
               />
@@ -1128,11 +1126,7 @@ const showSkeleton = shallowRef(false)
           <!-- Package manager dropdown -->
           <PackageManagerSelect />
         </div>
-        <div
-          role="tabpanel"
-          :id="`pm-panel-${activePmId}`"
-          :aria-labelledby="`pm-tab-${activePmId}`"
-        >
+        <div>
           <TerminalExecute
             :package-name="pkg.name"
             :jsr-info="jsrInfo"
@@ -1155,11 +1149,7 @@ const showSkeleton = shallowRef(false)
           <!-- Package manager dropdown -->
           <PackageManagerSelect />
         </div>
-        <div
-          role="tabpanel"
-          :id="`pm-panel-${activePmId}`"
-          :aria-labelledby="`pm-tab-${activePmId}`"
-        >
+        <div>
           <div
             v-if="publishSecurityDowngrade"
             role="alert"
@@ -1380,7 +1370,11 @@ const showSkeleton = shallowRef(false)
           </ClientOnly>
 
           <!-- Download stats -->
-          <PackageWeeklyDownloadStats :packageName :createdIso="pkg?.time?.created ?? null" />
+          <PackageWeeklyDownloadStats
+            :packageName
+            :createdIso="pkg?.time?.created ?? null"
+            :repoRef="repoRef"
+          />
 
           <!-- Playground links -->
           <PackagePlaygrounds
