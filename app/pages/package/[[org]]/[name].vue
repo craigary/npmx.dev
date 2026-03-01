@@ -23,12 +23,6 @@ import { togglePackageLike } from '~/utils/atproto/likes'
 import { useInstallSizeDiff } from '~/composables/useInstallSizeDiff'
 import type { RouteLocationRaw } from 'vue-router'
 
-defineOgImageComponent('Package', {
-  name: () => packageName.value,
-  version: () => requestedVersion.value ?? '',
-  primaryColor: '#60a5fa',
-})
-
 const router = useRouter()
 
 const header = useTemplateRef('header')
@@ -96,6 +90,16 @@ const navExtraOffsetStyle = computed(() => ({
 }))
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
+
+defineOgImage(
+  'Package.takumi',
+  {
+    name: () => packageName.value,
+    version: () => requestedVersion.value,
+    variant: 'download-chart',
+  },
+  [{ key: 'og' }, { key: 'whatsapp', width: 800, height: 800 }],
+)
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
